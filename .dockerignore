@@ -1,5 +1,5 @@
 .idea
 .mvn
-node_modules
+
 target
 *.md

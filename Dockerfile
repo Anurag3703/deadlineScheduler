@@ -4,11 +4,12 @@
 FROM node:18-alpine AS frontend-builder
 
 WORKDIR /app
-COPY deadline-scheduler-frontend/package.json deadline-scheduler-frontend/package-lock.json ./
-RUN npm ci --silent
-
-COPY deadline-scheduler-frontend .
-RUN npm run build
+# If you have a frontend, uncomment these lines:
+# COPY package.json package-lock.json ./
+# RUN npm ci
+# COPY public ./public
+# COPY src ./src
+# RUN npm run build
 
 # ============================================
 # STAGE 2: Build Spring Boot (Maven)
@@ -29,10 +30,13 @@ FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 COPY --from=backend-builder /app/target/*.jar app.jar
+
+# Create a directory for static content
+RUN mkdir -p /static
 COPY --from=frontend-builder /app/build /static
 
-# Optimized for production
-ENV SPRING_PROFILES_ACTIVE=production
+# Expose the port
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-Xmx512m", "-Xss512k", "-jar", "app.jar", "--spring.web.resources.static-locations=classpath:/static/"]
+# Run with environment variables
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-Xmx512m", "-Xss512k", "-jar", "app.jar"]
