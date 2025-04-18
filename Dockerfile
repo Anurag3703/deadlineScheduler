@@ -1,18 +1,7 @@
-# ============================================
-# STAGE 1: Build React Frontend (Node.js)
-# ============================================
-FROM node:18-alpine AS frontend-builder
-
-WORKDIR /app
-# If you have a frontend, uncomment these lines:
-# COPY package.json package-lock.json ./
-# RUN npm ci
-# COPY public ./public
-# COPY src ./src
-# RUN npm run build
+# Backend-only Dockerfile
 
 # ============================================
-# STAGE 2: Build Spring Boot (Maven)
+# STAGE 1: Build Spring Boot (Maven)
 # ============================================
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS backend-builder
 
@@ -24,16 +13,12 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 # ============================================
-# FINAL STAGE: Production Runtime
+# STAGE 2: Production Runtime
 # ============================================
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 COPY --from=backend-builder /app/target/*.jar app.jar
-
-# Create a directory for static content
-RUN mkdir -p /static
-COPY --from=frontend-builder /app/build /static
 
 # Expose the port
 EXPOSE 8080
