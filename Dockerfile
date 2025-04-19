@@ -26,7 +26,7 @@ spring.mail.properties.mail.smtp.starttls.enable=true\n\
 spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com\n\
 \n\
 # PostgreSQL Database Configuration\n\
-spring.datasource.url=\${DB_URL}\n\
+spring.datasource.url=jdbc:postgresql://dpg-d01egtqdbo4c738mjvdg-a:5432/deadline_db\n\
 spring.datasource.username=\${DB_USERNAME}\n\
 spring.datasource.password=\${DB_PASSWORD}\n\
 spring.datasource.driver-class-name=org.postgresql.Driver\n\
