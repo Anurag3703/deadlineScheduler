@@ -8,6 +8,7 @@ import org.example.deadlinescheduler.database.model.Deadline;
 
 import org.example.deadlinescheduler.database.service.implementation.DeadlineServiceImpl;
 import org.example.deadlinescheduler.database.service.implementation.UserServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,16 @@ public class DeadlineController {
             return ResponseEntity.ok(newDeadlineDTO);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteDeadline(@RequestParam String email, @RequestParam Long id) {
+        try{
+            deadlineServiceImpl.deleteDeadline(email, id);
+            return ResponseEntity.ok("Deadline deleted successfully.");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error deleting deadline: " + e.getMessage());
         }
     }
 

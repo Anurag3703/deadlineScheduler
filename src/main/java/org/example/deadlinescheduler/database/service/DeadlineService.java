@@ -11,5 +11,5 @@ public interface DeadlineService {
     void sendEmail(String toEmail ,String subject, String body);
     void scheduleEmail(Deadline deadline, LocalDate date, String subject);
     List<Deadline> getDeadlines(String email);
-    void deleteDeadline(Deadline deadline);
+    void deleteDeadline(String userEmail, Long deadlineId );
 }

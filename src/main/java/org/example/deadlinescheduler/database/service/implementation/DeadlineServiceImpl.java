@@ -106,10 +106,27 @@ public class DeadlineServiceImpl implements DeadlineService {
     }
 
     @Override
-    public void deleteDeadline(Deadline deadline) {
-        User user = userRepository.findByEmail(deadline.getUser().getEmail())
+    @Transactional
+    public void deleteDeadline(String userEmail, Long deadlineId ) {
+        User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        deadlineRepository.delete(deadline);
+
+        // Find and remove the deadline from user's collection
+        Deadline deadlineToDelete = user.getDeadlines()
+                .stream()
+                .filter(d -> d.getId().equals(deadlineId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Deadline not found"));
+
+        user.getDeadlines().remove(deadlineToDelete);
+
+        userRepository.save(user);
+
+        deadlineRepository.delete(deadlineToDelete);
+
+
+        deadlineRepository.flush();
+
 
     }
 
