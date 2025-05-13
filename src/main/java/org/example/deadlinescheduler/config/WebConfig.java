@@ -12,8 +12,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000",
                         "https://on-time-frontend.vercel.app",
                         "https://on-time-frontend-anurag3703s-projects.vercel.app",
-                        "https://on-time-frontend-d8xknc31w-anurag3703s-projects.vercel.app")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        "https://on-time-frontend-d8xknc31w-anurag3703s-projects.vercel.app",
+                        "https://*.vercel.app")
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
